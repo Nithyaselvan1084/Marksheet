@@ -1,0 +1,63 @@
+package com.example.studentresult;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+
+
+
+
+@RestController
+public class ResultsController {
+	@Autowired
+	ResultsService resultser;
+	@Autowired
+	RestTemplate rest;
+
+	@PostMapping(value = "/addResults")
+	public String addresult(@RequestBody Results result) {
+		String Url1="http:/localhost:8080/getstudent/";
+		String Url2="http:/localhost:8081/getmsheet/";
+		
+		return resultser.addresult(result);
+	}
+
+	@GetMapping(value = "/getresult/{id}")
+	public Results getresult(@PathVariable int id) {
+		return resultser.getresult(id);
+	}
+
+	@PutMapping(value = "/updateresult/{id}")
+	public String updateresult(@RequestBody Results id) {
+		return resultser.updateresult(id);
+	}
+
+	@DeleteMapping(value = "/deleteresult/{id}")
+	public String deleteresult(@PathVariable int id) {
+		return resultser.deleteresult(id);
+	}
+
+	@PostMapping(value = "/addallResults")
+	public String addallresult(@RequestBody List<Results> result) {
+		return resultser.addallresult(result);
+	}
+
+	@GetMapping(value = "/getallresult")
+	public List<Results> getallresult() {
+		return resultser.getallresult();
+	}
+
+	
+}

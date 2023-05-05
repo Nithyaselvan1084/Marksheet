@@ -1,0 +1,45 @@
+package com.example.studentresult;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+
+
+@Repository
+public class ResultsDao {
+	@Autowired
+	ResultsRepository resultrepo;
+
+	public String addstud(Results stud) {
+		resultrepo.save(stud);
+		return "success";
+	}
+
+	public Results getstud(int id) {
+		return resultrepo.findById(id).get();
+	}
+
+	public String updatestud(Results id) {
+		resultrepo.save(id);
+		return "success";
+	}
+
+	public String deletestud(int id) {
+		resultrepo.deleteById(id);
+		return "success";
+	}
+
+	public String addallstud(List<Results> stud) {
+		resultrepo.saveAll(stud);
+		return "success";
+	}
+
+	public List<Results> getallstud() {
+		return resultrepo.findAll();
+	}
+
+	
+
+}

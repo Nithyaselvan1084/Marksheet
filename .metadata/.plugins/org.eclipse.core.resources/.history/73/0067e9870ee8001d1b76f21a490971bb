@@ -1,0 +1,3 @@
+spring.datasource.url=http:
+spring.datasource.name=root
+spring.datasource.password=root

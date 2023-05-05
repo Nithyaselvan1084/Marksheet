@@ -1,0 +1,58 @@
+package com.example.ResultsResults;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+
+
+
+
+@RestController
+public class ResultsController {
+	@Autowired
+	ResultsService studser;
+
+	@PostMapping(value = "/addResults")
+	public String addstud(@RequestBody Results stud) {
+		return studser.addstud(stud);
+	}
+
+	@GetMapping(value = "/getstud/{id}")
+	public Results getstud(@PathVariable int id) {
+		return studser.getstud(id);
+	}
+
+	@PutMapping(value = "/updatestud/{id}")
+	public String updatestud(@RequestBody Results id) {
+		return studser.updatestud(id);
+	}
+
+	@DeleteMapping(value = "/deletestud/{id}")
+	public String deletestud(@PathVariable int id) {
+		return studser.deletestud(id);
+	}
+
+	@PostMapping(value = "/addallResults")
+	public String addallstud(@RequestBody List<Results> stud) {
+		return studser.addallstud(stud);
+	}
+
+	@GetMapping(value = "/getallstud")
+	public List<Results> getallstud() {
+		return studser.getallstud();
+	}
+
+	
+}

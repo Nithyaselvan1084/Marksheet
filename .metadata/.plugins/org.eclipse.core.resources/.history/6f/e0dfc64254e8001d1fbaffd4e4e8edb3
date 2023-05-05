@@ -1,0 +1,64 @@
+package com.example.studentresult;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
+@Service
+public class ResultsService {
+	@Autowired
+	ResultsDao resultdao;
+
+	public String addresult(Results result) {
+		return resultdao.addresult(result);
+	}
+
+	public Results getresult(int id) {
+		return resultdao.getresult(id);
+	}
+
+	public String updateresult(Results id) {
+		return resultdao.updateresult(id);
+	}
+
+	public String deleteresult(int id) {
+		return resultdao.deleteresult(id);
+	}
+
+	public String addallresult(List<Results> result) {
+		return resultdao.addallresult(result);
+	}
+
+	public List<Results> getallresult() {
+		return resultdao.getallresult();
+	}
+	public Results gettopper() {
+		Results topper=resultdao.getallresult().stream().max(Comparator.comparing(Results::getTotalmarks)).get();
+		return topper;
+	}
+	public int getstud() {
+		return resultdao.getstud();
+	}
+	public List<Results>gettop3(){
+		List<Results> ascend=resultdao.getallresult().stream().sorted(Comparator.comparing(Results::getTotalmarks)).limit(3).collect(Collectors.toList());
+		List<Results>top3=new ArrayList<>();
+//		int n=ascend.size();
+//		
+//		for(int i=n-1;i<0;i--) {
+//			top3.add(ascend.get(i));
+//		}
+//		List<Results>top4=top3.stream().limit(3).collect(Collectors.toList());
+		return ascend;
+		
+		}
+
+}
+
+	
+
+

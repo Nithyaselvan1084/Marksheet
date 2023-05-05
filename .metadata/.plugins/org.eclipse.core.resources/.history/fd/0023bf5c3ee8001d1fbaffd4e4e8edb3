@@ -1,0 +1,91 @@
+package com.example.studentresult;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+
+
+
+
+@RestController
+public class ResultsController {
+	@Autowired
+	ResultsService resultser;
+	@Autowired
+	RestTemplate rest;
+
+	@PostMapping(value = "/addResults")
+	public String addresult(@RequestBody Results result) {
+		String Url2="http://localhost:8081/getsem1total/";
+		String Url3="http://localhost:8081/getsem2total/";
+		String Url4="http://localhost:8080/getname/";
+		int temp=result.getRollnumber();
+		ResponseEntity<Integer>response1=rest.exchange(Url2+temp,HttpMethod.GET,null,Integer.class);
+		int sem1total=response1.getBody();
+		ResponseEntity<Integer>response2=rest.exchange(Url3+temp,HttpMethod.GET,null,Integer.class);
+		int sem2total=response2.getBody();
+		int total=sem2total+sem1total;
+		result.setTotalmarks(total/2);
+		result.setPercentage(result.getTotalmarks()/2);
+		ResponseEntity<String>response3=rest.exchange(Url4+temp,HttpMethod.GET,null,String.class);
+		String name=response3.getBody();
+		result.setName(name);
+		return resultser.addresult(result);
+	}
+
+	@GetMapping(value = "/getresult/{id}")
+	public Results getresult(@PathVariable int id) {
+		return resultser.getresult(id);
+	}
+
+	@PutMapping(value = "/updateresult/{id}")
+	public String updateresult(@RequestBody Results id) {
+		return resultser.updateresult(id);
+	}
+
+	@DeleteMapping(value = "/deleteresult/{id}")
+	public String deleteresult(@PathVariable int id) {
+		return resultser.deleteresult(id);
+	}
+
+	@PostMapping(value = "/addallResults")
+	public String addallresult(@RequestBody List<Results> result) {
+		String Url2="http://localhost:8081/getsem1total/";
+		String Url3="http://localhost:8081/getsem2total/";
+		String Url4="http://localhost:8080/getname/";
+		List<Results>res=result;
+		for(Results x:res) {
+		int temp=x.getRollnumber();
+		ResponseEntity<Integer>response1=rest.exchange(Url2+temp,HttpMethod.GET,null,Integer.class);
+		int sem1total=response1.getBody();
+		ResponseEntity<Integer>response2=rest.exchange(Url3+temp,HttpMethod.GET,null,Integer.class);
+		int sem2total=response2.getBody();
+		int total=sem2total+sem1total;
+		x.setTotalmarks(total/2);
+		x.setPercentage((x.getTotalmarks()/400)*100);
+		ResponseEntity<String>response3=rest.exchange(Url4+temp,HttpMethod.GET,null,String.class);
+		String name=response3.getBody();
+		x.setName(name);
+		}
+		return resultser.addallresult(result);
+	}
+
+	@GetMapping(value = "/getallresult")
+	public List<Results> getallresult() {
+		return resultser.getallresult();
+	}
+
+	
+}
