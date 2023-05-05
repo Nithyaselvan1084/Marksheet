@@ -20,8 +20,8 @@ public class ResultsService {
 	@Autowired
 	RestTemplate rest;
 
-	public String addresult(Results res) {
-		return resultdao.addresult(res);
+	public String addresult(Results result) {
+		return resultdao.addresult(result);
 	}
 
 	public Results getresult(int id) {
